@@ -1,0 +1,179 @@
+/* Dark green + black UI theme with subtle motion */
+
+:root{
+  --bg0:#060707;
+  --bg1:#0b1210;
+  --panel:#0e1714;
+  --panel2:#111f1a;
+
+  --green:#19c37d;
+  --green2:#0ea66a;
+  --green3:#0b7a4a;
+
+  --text:#e8fff6;
+  --muted:#9ccdbb;
+
+  --border:rgba(25,195,125,.22);
+  --shadow: 0 20px 60px rgba(0,0,0,.45);
+}
+
+html,body{height:100%;}
+body{
+  background: radial-gradient(1200px 800px at 15% 10%, rgba(25,195,125,.16), transparent 55%),
+              radial-gradient(900px 600px at 85% 20%, rgba(14,166,106,.10), transparent 55%),
+              linear-gradient(180deg, var(--bg0), var(--bg1));
+  color:var(--text);
+}
+
+a{color:rgba(25,195,125,.95); text-decoration:none;}
+a:hover{color:#6fffd0;}
+
+/* Navbar glow */
+.navbar{
+  background: linear-gradient(90deg, #000, rgba(25,195,125,.18));
+  border-bottom:1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+/* Animated background accents */
+.bg-accents{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.bg-accents::before,
+.bg-accents::after{
+  content:"";
+  position:absolute;
+  width:560px;
+  height:560px;
+  border-radius:50%;
+  filter: blur(30px);
+  opacity:.55;
+  background: radial-gradient(circle at 30% 30%, rgba(25,195,125,.45), transparent 55%);
+  animation: floatGlow 10s ease-in-out infinite;
+}
+
+.bg-accents::before{left:-120px; top:10%;}
+.bg-accents::after{
+  right:-160px; top:40%;
+  background: radial-gradient(circle at 30% 30%, rgba(14,166,106,.35), transparent 58%);
+  animation-duration: 13s;
+}
+
+@keyframes floatGlow{
+  0%,100%{transform: translateY(0) scale(1);}
+  50%{transform: translateY(-22px) scale(1.03);}
+}
+
+/* Cards */
+.card{
+  background: linear-gradient(180deg, rgba(16,28,23,.88), rgba(10,18,15,.92));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 18px;
+  overflow:hidden;
+  transform: translateZ(0);
+}
+
+.card-body, .form-control, textarea, .btn{
+  border-radius: 14px;
+}
+
+/* Subtle entrance */
+@media (prefers-reduced-motion: no-preference){
+  .animate-in{
+    animation: popIn .55s cubic-bezier(.2,.8,.2,1) both;
+  }
+}
+
+@keyframes popIn{
+  from{opacity:0; transform: translateY(10px) scale(.98);}
+  to{opacity:1; transform: translateY(0) scale(1);}
+}
+
+/* Buttons */
+.btn-primary{
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  border: 1px solid rgba(25,195,125,.45);
+  box-shadow: 0 14px 34px rgba(25,195,125,.18);
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+}
+
+.btn-primary:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 18px 44px rgba(25,195,125,.25);
+}
+
+.btn-outline-light, .btn-outline-primary{
+  border-color: rgba(156,205,187,.35) !important;
+}
+
+/* Form inputs */
+.form-control{
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(156,205,187,.25);
+  color: var(--text);
+}
+.form-control::placeholder{color: rgba(156,205,187,.65);} 
+.form-control:focus{
+  border-color: rgba(25,195,125,.65);
+  box-shadow: 0 0 0 .2rem rgba(25,195,125,.18);
+}
+
+textarea.form-control{min-height: 140px;}
+
+/* Details/expand */
+details{
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(25,195,125,.18);
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+details[open]{
+  border-color: rgba(25,195,125,.42);
+}
+
+summary{
+  cursor:pointer;
+  user-select:none;
+  font-weight:600;
+}
+
+/* Pre styling for SWOT output */
+pre{
+  color: rgba(232,255,246,.96);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+/* Loading shimmer */
+#loading{
+  background: rgba(0,0,0,.15);
+  border: 1px solid rgba(25,195,125,.18);
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.spinner-border{
+  width: 2rem;
+  height: 2rem;
+  border-right-color: transparent;
+}
+
+/* Utility: dark badges */
+.text-muted{color: var(--muted) !important;}
+.small.text-muted{opacity:.95;}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+

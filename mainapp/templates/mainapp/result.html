@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SWOT Result - SWOT Analyzer</title>
+  {% load static %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'mainapp/style-darkgreen.css' %}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container d-flex justify-content-between">
+    <a class="navbar-brand" href="{% url 'home' %}">SWOT Analyzer</a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-light btn-sm" href="{% url 'idea' %}">New Idea</a>
+      <a class="btn btn-outline-light btn-sm" href="{% url 'feedback' %}">Feedback</a>
+      <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div>
+              <h3 class="mb-1">SWOT Analysis</h3>
+              <p class="text-muted mb-0">Category: <span class="fw-semibold">{{ analysis.category }}</span></p>
+            </div>
+            <div class="text-end">
+              <div class="small text-muted">Generated on {{ analysis.created_at }}</div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="mb-3">
+            <div class="fw-semibold mb-2">Idea</div>
+            <div class="border rounded p-3 bg-white">{{ analysis.idea }}</div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm" style="background:#e8fff2;">
+                <div class="card-body">
+                  <h5 class="card-title text-success">Strengths</h5>
+                  <pre class="mb-0 bg-transparent" style="white-space:pre-wrap">{{ analysis.strengths }}</pre>
+                  {% if analysis.strengths_explanation %}
+                    <details class="mt-3">
+                      <summary class="fw-semibold">Detailed explanation</summary>
+                      <p class="mt-2">{{ analysis.strengths_explanation }}</p>
+                    </details>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm" style="background:#fff2f2;">
+                <div class="card-body">
+                  <h5 class="card-title text-danger">Weaknesses</h5>
+                  <pre class="mb-0 bg-transparent" style="white-space:pre-wrap">{{ analysis.weaknesses }}</pre>
+                  {% if analysis.weaknesses_explanation %}
+                    <details class="mt-3">
+                      <summary class="fw-semibold">Detailed explanation</summary>
+                      <p class="mt-2">{{ analysis.weaknesses_explanation }}</p>
+                    </details>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm" style="background:#f1f7ff;">
+                <div class="card-body">
+                  <h5 class="card-title text-primary">Opportunities</h5>
+                  <pre class="mb-0 bg-transparent" style="white-space:pre-wrap">{{ analysis.opportunities }}</pre>
+                  {% if analysis.opportunities_explanation %}
+                    <details class="mt-3">
+                      <summary class="fw-semibold">Detailed explanation</summary>
+                      <p class="mt-2">{{ analysis.opportunities_explanation }}</p>
+                    </details>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm" style="background:#fff7e6;">
+                <div class="card-body">
+                  <h5 class="card-title text-warning">Threats</h5>
+                  <pre class="mb-0 bg-transparent" style="white-space:pre-wrap">{{ analysis.threats }}</pre>
+                  {% if analysis.threats_explanation %}
+                    <details class="mt-3">
+                      <summary class="fw-semibold">Detailed explanation</summary>
+                      <p class="mt-2">{{ analysis.threats_explanation }}</p>
+                    </details>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if analysis.improvement_suggestions %}
+            <div class="mt-4">
+              <h5 class="mb-2">Actionable suggestions</h5>
+              <div class="border rounded p-3 bg-white">
+                <pre class="mb-0" style="white-space:pre-wrap">{{ analysis.improvement_suggestions }}</pre>
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

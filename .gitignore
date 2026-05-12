@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.virtualenv/
+
+# Environment Variables (IMPORTANT - API Keys)
+.env
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Static & Media Files
+media/
+staticfiles/
+
+# Migrations (optional)
+# Uncomment if you don't want migrations in git
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# IDE / Editor Files
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build Files
+build/
+dist/
+*.egg-info/
+
+# Temporary Files
+*.tmp
+*.temp
+
+# Secrets
+*.pem
+*.key
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Node Modules (if using frontend tools)
+node_modules/
