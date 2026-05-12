@@ -7,6 +7,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import FeedbackForm, RegisterForm
 from .models import SWOTAnalysis
 from .openai_client import SWOTGenerationError, generate_swot
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
 
 
 CATEGORIES = [
@@ -20,18 +23,35 @@ def home(request):
 
 
 def register_view(request):
+
+    # If already logged in
     if request.user.is_authenticated:
         return redirect('category')
 
+    # Create form instance
     form = RegisterForm(request.POST or None)
 
-    if request.method == 'POST' and form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, 'Registration successful.')
-        return redirect('category')
+    # Handle form submission
+    if request.method == 'POST':
 
-    return render(request, 'mainapp/register.html', {'form': form})
+        if form.is_valid():
+
+            # Save user
+            user = form.save()
+
+            # Login user
+            login(request, user)
+
+            # Success message
+            messages.success(request, 'Registration successful.')
+
+            # Redirect
+            return redirect('category')
+
+    # Show form page
+    return render(request, 'mainapp/register.html', {
+        'form': form
+    })
 
 
 def login_view(request):
@@ -114,20 +134,47 @@ def result_view(request):
     analysis = get_object_or_404(SWOTAnalysis, id=analysis_id, user=request.user)
     return render(request, 'mainapp/result.html', {'analysis': analysis})
 
-
 @login_required
 def feedback_view(request):
+
     form = FeedbackForm(request.POST or None)
 
-    if request.method == 'POST' and form.is_valid():
+    if request.method == "POST":
+
+        print("POST DATA:", request.POST)
+        rating = request.POST.get("rating")
+        message = request.POST.get("message")
+        suggestion = request.POST.get("suggestion")
+
+        errors = []
+
+        if not rating:
+            errors.append("Please select a rating.")
+
+        if not message or not message.strip():
+            errors.append("Please enter your comments.")
+
+        # optional suggestion (no strict validation, but clean it)
+        if suggestion:
+            suggestion = suggestion.strip()
+
+        if errors:
+            for e in errors:
+                messages.error(request, e)
+            return render(request, "mainapp/feedback.html", {"form": form})
+
         feedback = form.save(commit=False)
         feedback.user = request.user
+        feedback.rating = rating
+        feedback.message = message.strip()
+        feedback.suggestion = suggestion if suggestion else ""
+
         feedback.save()
-        messages.success(request, 'Feedback saved.')
-        return redirect('home')
 
-    return render(request, 'mainapp/feedback.html', {'form': form})
+        messages.success(request, "Feedback submitted successfully.")
+        return redirect("feedback")
 
+    return render(request, "mainapp/feedback.html", {"form": form})
 
 def about(request):
     return render(request, 'mainapp/about.html')
