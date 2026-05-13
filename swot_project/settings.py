@@ -12,7 +12,7 @@ DEBUG = False
 
 
 # ✅ FIXED ALLOWED_HOSTS (IMPORTANT FOR DEPLOYMENT)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://swot-analyzer-ten.vercel.app/']
 
 
 INSTALLED_APPS = [
