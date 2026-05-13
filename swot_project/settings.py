@@ -4,18 +4,39 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-if not SECRET_KEY:
-    SECRET_KEY ='django-insecure-o-p+0i2=6h)xzc#!j_fc@z^*a2r&pv8aua_peb_go4=67gscbl'
+# =========================
+# SECURITY
+# =========================
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-o-p+0i2=6h)xzc#!j_fc@z^*a2r&pv8aua_peb_go4=67gscbl")
+
+DEBUG = False  # keep False in production
 
 
-# ✅ FIXED ALLOWED_HOSTS (IMPORTANT FOR DEPLOYMENT)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://swot-analyzer-ten.vercel.app']
+# =========================
+# ALLOWED HOSTS (FIXED)
+# =========================
 
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    ".vercel.app",
+    "swot-analyzer-ten.vercel.app"
+]
+
+
+# =========================
+# CSRF FIX (IMPORTANT FOR VERCEL)
+# =========================
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app"
+]
+
+
+# =========================
+# APPLICATIONS
+# =========================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -28,6 +49,10 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
 ]
 
+
+# =========================
+# MIDDLEWARE
+# =========================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -44,6 +69,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'swot_project.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -59,8 +85,13 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'swot_project.wsgi.application'
 
+
+# =========================
+# DATABASE
+# =========================
 
 DATABASES = {
     'default': {
@@ -70,6 +101,10 @@ DATABASES = {
 }
 
 
+# =========================
+# PASSWORD VALIDATION
+# =========================
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -78,17 +113,29 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# =========================
+# INTERNATIONALIZATION
+# =========================
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
 
+# =========================
+# STATIC FILES (WHITE NOISE)
+# =========================
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
+# =========================
+# LOGIN SETTINGS
+# =========================
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'category'
