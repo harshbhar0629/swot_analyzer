@@ -7,14 +7,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
-    SECRET_KEY ='django-insecure-o-p+0i2=6h)xzc#!j_fc@z^*a2r&pv8aua_peb_go4=67gscbl'
+    SECRET_KEY = 'django-insecure-o-p+0i2=6h)xzc#!j_fc@z^*a2r&pv8aua_peb_go4=67gscbl'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
-# ✅ FIXED ALLOWED_HOSTS (IMPORTANT FOR DEPLOYMENT)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://swot-analyzer-ten.vercel.app']
+# ✅ FIXED ALLOWED_HOSTS
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'swot-analyzer-ten.vercel.app',
+]
+
+
+# ✅ CSRF FIX (IMPORTANT FOR REGISTER/LOGIN IN PRODUCTION)
+CSRF_TRUSTED_ORIGINS = [
+    'https://swot-analyzer-ten.vercel.app',
+]
 
 
 INSTALLED_APPS = [
@@ -25,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+
+    # WhiteNoise (for static files in production)
     'whitenoise.runserver_nostatic',
 ]
 
@@ -90,6 +103,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
+# ✅ LOGIN SETTINGS
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'category'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+# ✅ OPTIONAL (recommended for production login/register stability over HTTPS)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
