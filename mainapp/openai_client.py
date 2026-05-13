@@ -20,17 +20,14 @@ def _load_local_env():
             os.environ.setdefault(key.strip(), value.strip())
 
 
+import os
 import json
 from openai import OpenAI
 
 
-class SWOTGenerationError(Exception):
-    pass
-
-
 def generate_swot(idea, category):
 
-    api_key = ""
+    api_key = os.environ.get("api_key")
 
     client = OpenAI(
         api_key=api_key,
