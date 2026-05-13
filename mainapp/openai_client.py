@@ -20,41 +20,61 @@ def _load_local_env():
             os.environ.setdefault(key.strip(), value.strip())
 
 
-def generate_swot(idea, category):
-    _load_local_env()
+import json
+from openai import OpenAI
 
-    api_key = 
-    model =
-    
+
+class SWOTGenerationError(Exception):
+    pass
+
+
+def generate_swot(idea, category):
+
+    api_key = ""
+
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1"
+    )
 
     prompt = f"""
-    Generate a unique SWOT analysis for this business idea.
+    Generate a SWOT analysis for this business idea.
 
     Category: {category}
     Idea: {idea}
 
-    Return only JSON with:
-    strengths, weaknesses, opportunities, threats"""
+    Return JSON only with:
+    strengths, weaknesses, opportunities, threats
+    """
 
-    client = OpenAI(api_key=)
+    try:
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {'role': 'system', 'content': 'Return only valid JSON.'},
-            {'role': 'user', 'content': prompt},
-        ],
-        response_format={'type': 'json_object'},
-    )
-    print(response)
-    # OpenAI with response_format=json_object returns JSON in the message content.
-    content = response.choices[0].message.content
-    data = json.loads(content)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Return only valid JSON."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            response_format={"type": "json_object"},
+        )
 
+        content = response.choices[0].message.content
 
-    return {
-        'strengths': data['strengths'],
-        'weaknesses': data['weaknesses'],
-        'opportunities': data['opportunities'],
-        'threats': data['threats'],
-    }
+        data = json.loads(content)
+
+        return {
+            'strengths': data.get('strengths', []),
+            'weaknesses': data.get('weaknesses', []),
+            'opportunities': data.get('opportunities', []),
+            'threats': data.get('threats', []),
+        }
+
+    except Exception as e:
+        print("ERROR:", e)
+        raise SWOTGenerationError(str(e))
